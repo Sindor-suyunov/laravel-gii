@@ -1,0 +1,31 @@
+{
+    "name": "sindor/laravel-gii",
+    "description": "Gii module for Laravel",
+    "keywords": ["laravel","laravel-gii","sindor-laravel","sindor-gii"],
+    "minimum-stability": "dev",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "sindor",
+            "email": "email@example.com"
+        }
+    ],
+    "require": {
+        "php": "^8.1",
+        "doctrine/dbal": "^3.6",
+        "laravel/framework": "^10",
+        "livewire/livewire": "^2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Sindor\\LaravelGii\\": "src"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Sindor\\LaravelGii\\providers\\PackageServiceProvider"
+            ]
+        }
+    }
+}

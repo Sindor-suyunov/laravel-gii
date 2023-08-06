@@ -1,0 +1,9 @@
+<?php
+
+namespace $NAMESPACE$;
+$USE$
+
+class $CLASS_NAME$ extends \App\Http\Controllers\Controller
+{
+    $ACTIONS$
+}

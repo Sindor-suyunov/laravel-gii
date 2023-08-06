@@ -1,0 +1,12 @@
+<?php
+
+namespace $NAMESPACE$;
+
+class $CLASS_NAME$ extends \Illuminate\Database\Eloquent\Model
+{
+    $FILLABLE$
+
+    $CASTS$
+
+    $RELATIONS$
+}
