@@ -2,7 +2,7 @@
 
 powerfull UI web interface for generating code (model, controller .. ) in Laravel (save your time)
 
-## Installation
+## Installation and usage
 
 **1. Install package to your laravel project**
 
