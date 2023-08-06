@@ -1,6 +1,6 @@
 # About
 
-powerfull UI interface for generating code (model, controller .. ) in Laravel
+powerfull UI web interface for generating code (model, controller .. ) in Laravel (save your time)
 
 ## Installation
 
