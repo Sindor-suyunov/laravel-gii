@@ -13,7 +13,6 @@ class CreateModelsSameNamespace extends Component
 {
     public string $model_namespace;
     public array|string|null $table_names;
-    public string $table_schema;
     public string $model_path;
     public bool $model_create_fillable;
     public bool $model_create_casts;
@@ -26,7 +25,6 @@ class CreateModelsSameNamespace extends Component
     protected array $rules = [
         'model_namespace' => 'required',
         'table_names' => 'required',
-        'table_schema' => 'required',
         'model_path' => 'required',
         'controller_path' => "required_if:add_resource_controller,true",
         'controller_namespace' => "required_if:add_resource_controller,true",
@@ -37,7 +35,6 @@ class CreateModelsSameNamespace extends Component
         $this->model_namespace = 'App\Models';
         $this->model_path = 'app\Models';
         $this->table_names = '';
-        $this->table_schema = env('DB_DATABASE', 'scheme');
         $this->add_resource_controller = false;
         $this->controller_namespace = 'App\Http\Controllers';
         $this->controller_path = 'app\Http\Controllers';

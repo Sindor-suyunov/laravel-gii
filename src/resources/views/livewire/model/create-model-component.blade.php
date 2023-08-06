@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <div class="mb-3">
                         <label for="table" class="form-label text-white">Select table for model</label>
                         <select wire:model="table_name"
@@ -52,7 +52,7 @@
                         @error('table_name')<span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-sm-6">
                     <div class="mb-3">
                         <label for="model_name" class="form-label text-white">Model name</label>
                         <input type="text"
@@ -64,19 +64,7 @@
                                placeholder="Model">
                         @error('model_name')<span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="mb-3">
-                        <label for="table_schema" class="form-label text-white">Table Scheme</label>
-                        <input type="text"
-                               name="table_schema"
-                               class="form-control form-control-lg"
-                               id="table_schema"
-                               wire:model="table_schema"
-                               value="{{ $table_schema }}"
-                        @error('table_schema')<span class="error text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
+                </div
             </div>
             <div class="row properties">
                 <div class="mb-3">

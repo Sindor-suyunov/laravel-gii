@@ -14,7 +14,6 @@ class CreateModelComponent extends Component
     public string $model_namespace;
     public string|null $table_name;
     public string $model_name;
-    public string $table_schema;
     public string $model_path;
     public bool $model_create_fillable;
     public bool $model_create_casts;
@@ -28,7 +27,6 @@ class CreateModelComponent extends Component
     protected array $rules = [
         'model_namespace' => 'required',
         'table_name' => 'required',
-        'table_schema' => 'required',
         'model_name' => 'required',
         'model_path' => 'required',
         'controller_name' => "required_if:add_resource_controller,true",
@@ -41,7 +39,6 @@ class CreateModelComponent extends Component
         $this->model_namespace = 'App\Models';
         $this->model_path = 'app\Models';
         $this->table_name = '';
-        $this->table_schema = env('DB_DATABASE', 'scheme');
         $this->model_name = '';
         $this->add_resource_controller = false;
         $this->controller_namespace = 'App\Http\Controllers';

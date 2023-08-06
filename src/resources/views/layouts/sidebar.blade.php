@@ -6,7 +6,7 @@
     <div class="accordion" id="accordionExample">
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="bg-dark text-white accordion-button @if($is_model) show @else collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#modelCollapse" @if($is_model) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="modelCollapse">
+                <button class="accordion-button @if($is_model) show @else collapsed @endif" type="button" data-bs-toggle="collapse" data-bs-target="#modelCollapse" @if($is_model) aria-expanded="true" @else aria-expanded="false" @endif aria-controls="modelCollapse">
                     Model
                 </button>
             </h2>
@@ -27,14 +27,14 @@
         </div>
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="bg-dark text-white accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#controllerCollapse" aria-expanded="false" aria-controls="controllerCollapse">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#controllerCollapse" aria-expanded="false" aria-controls="controllerCollapse">
                     <span>Controller</span> <span class="bg-danger text-white ms-auto px-2 rounded">development</span>
                 </button>
             </h2>
         </div>
         <div class="accordion-item">
             <h2 class="accordion-header">
-                <button class="bg-dark text-white accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#viewCollapse" aria-expanded="false" aria-controls="viewCollapse">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#viewCollapse" aria-expanded="false" aria-controls="viewCollapse">
                     <span>View</span> <span class="bg-danger text-white ms-auto px-2 rounded">development</span>
                 </button>
             </h2>

@@ -109,7 +109,7 @@ class GenerateSameModelsService
     private function getRelations(): string
     {
         if ($this->data->model_has_relations) {
-            return Generator::generateModelRelations($this->data->table_schema, $this->table_name);
+            return Generator::generateModelRelations($this->table_name);
         }
         return "";
     }

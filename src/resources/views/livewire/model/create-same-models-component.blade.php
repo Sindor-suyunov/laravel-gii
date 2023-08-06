@@ -51,18 +51,6 @@
                         @error('table_names')<span class="error text-danger">{{ $message }}</span> @enderror
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div class="mb-3">
-                        <label for="table_schema" class="form-label text-white">Table Scheme</label>
-                        <input type="text"
-                               name="table_schema"
-                               class="form-control form-control-lg"
-                               id="table_schema"
-                               wire:model="table_schema"
-                               value="{{ $table_schema }}"
-                        @error('table_schema')<span class="error text-danger">{{ $message }}</span> @enderror
-                    </div>
-                </div>
             </div>
             <div class="row properties">
                 <div class="mb-3">

@@ -15,7 +15,6 @@ class GenerateModelDTO
     public bool|null $model_has_casts;
     public bool|null $model_has_relations;
     public array|null $columns;
-    public string|null $table_schema;
     public string|null $model_path;
     public bool|null $add_resource_controller;
     public string|null $controller_namespace;
@@ -32,7 +31,6 @@ class GenerateModelDTO
         $self->model_has_casts = (bool)$request->input('model_has_casts');
         $self->model_has_relations = (bool)$request->input('model_has_relations');
         $self->columns = [];
-        $self->table_schema = $request->input('table_schema');
         $self->model_path = $request->input('model_path');
         $self->add_resource_controller = (bool)$request->input('add_resource_controller');
         $self->controller_namespace = $request->input('controller_namespace');

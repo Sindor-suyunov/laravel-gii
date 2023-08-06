@@ -89,7 +89,7 @@ class GenerateModelService
     private function getRelations(): string
     {
         if ($this->data->model_has_relations) {
-            return Generator::generateModelRelations($this->data->table_schema, $this->data->table_name);
+            return Generator::generateModelRelations($this->data->table_name);
         }
         return "";
     }

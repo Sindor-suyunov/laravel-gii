@@ -6,10 +6,10 @@ use Illuminate\Support\Pluralizer;
 
 abstract class Generator
 {
-    public static function generateFillableProperty(?array $columns):string
+    public static function generateFillableProperty(?array $columns): string
     {
-        if ($columns){
-            $result = "/**\n\t* The attributes that are mass assignable.\n\t*\n\t* @var array\n\t*/\n\t";
+        if ($columns) {
+            $result = "\n\t/**\n\t* The attributes that are mass assignable.\n\t*\n\t* @var array\n\t*/\n\t";
             $result .= 'protected $fillable = [' . PHP_EOL;
             foreach ($columns as $column) {
                 $result .= "\t\t" . "'$column',\n";
@@ -17,13 +17,13 @@ abstract class Generator
             $result .= "\t];";
             return $result;
         }
-        return "";
+        return "\r";
     }
 
     public static function generateCastsProperty(?array $columns, string $table_name): string
     {
-        if($columns){
-            $result = "/**\n\t* The attributes that should be cast.\n\t*\n\t* @var array\n\t*/\n\t";
+        if ($columns) {
+            $result = "\n\t/**\n\t* The attributes that should be cast.\n\t*\n\t* @var array\n\t*/\n\t";
             $result .= 'protected $casts = [' . PHP_EOL;
             foreach ($columns as $column) {
                 $result .= "\t\t" . "'$column' => " . "'" . Data::getLaravelPropertyTypeFromDB($table_name, $column) . "',\n";
@@ -31,40 +31,46 @@ abstract class Generator
             $result .= "\t];";
             return $result;
         }
-        return "";
+        return "\r";
     }
 
-    public static function generateModelRelations(string $schema, string $table_name): string
+    public static function generateModelRelations(string $table_name): string
     {
-        return self::generateBelongsToRelations($schema, $table_name) . self::generateHasManyRelations($schema, $table_name);
+        return self::generateBelongsToRelations($table_name) . self::generateHasManyRelations($table_name);
     }
 
-    public static function generateBelongsToRelations(string $schema, string $table_name): string
+    public static function generateBelongsToRelations(string $table_name): string
     {
-        $belongsTos = Data::getBelongsToTableNames($schema, $table_name);
+        $belongsTos = Data::getBelongsToTableNames($table_name);
         $belongsTodata = "";
-        if ($belongsTos){
-            $belongsTodata .= "\n\t";
-            foreach ($belongsTos as $column => $table){
+        if ($belongsTos) {
+            foreach ($belongsTos as $column => $table) {
                 $modelName = self::generateSingularModelNameFromTableName($table);
-                $belongsTodata .= "/**\n\t* Get the $modelName model\n\t*/\n\t";
-                $belongsTodata .= "public function get" .$modelName . "(): \Illuminate\Database\Eloquent\Relations\BelongsTo\n\t{\n\t\t";
+                $belongsTodata .= "\n\t/**\n\t* Get the $modelName model\n\t*/\n\t";
+                $belongsTodata .= "public function " . self::generateSingularModelNameFromColumnName($column) . "(): \Illuminate\Database\Eloquent\Relations\BelongsTo\n\t{\n\t\t";
                 $belongsTodata .= 'return $this->belongsTo(' . $modelName . '::class, ' . "'$column');\n\t}\n";
             }
         }
         return $belongsTodata;
     }
 
-    public static function generateHasManyRelations(string $schema, string $table_name): string
+    public static function generateSingularModelNameFromColumnName(string $column_name): string
     {
-        $hasManyRelations = Data::getHasManyTableNames($schema, $table_name);
+        if (str($column_name)->endsWith('_id')){
+            $column_name = str($column_name)->remove('_id');
+        }
+        return $column_name->camel()->singular();
+    }
+
+    public static function generateHasManyRelations(string $table_name): string
+    {
+        $hasManyRelations = Data::getHasManyTableNames($table_name);
         $manyRelations = "";
-        if ($hasManyRelations){
-            $manyRelations .= "\n\t";
-            foreach ($hasManyRelations as $column => $table){
+        if ($hasManyRelations) {
+            foreach ($hasManyRelations as $column => $table) {
                 $modelName = self::generateSingularModelNameFromTableName($table);
-                $manyRelations .= "/**\n\t* Get the ".$modelName."[] models\n\t*/\n\t";
-                $manyRelations .= "public function get" . self::generatePluralModelNameFromTableName($table) . "(): \Illuminate\Database\Eloquent\Relations\HasMany\n\t{\n\t\t";
+                $manyRelations .= "\n\t/**\n\t* Get the " . $modelName . "[] models\n\t*/\n\t";
+                $manyRelations .= "public function " . self::generatePluralModelNameFromTableName($table) . "(): \Illuminate\Database\Eloquent\Relations\HasMany\n\t{\n\t\t";
                 $manyRelations .= 'return $this->hasMany(' . $modelName . '::class, ' . "'$column');\n\t}\n";
             }
         }
@@ -78,7 +84,7 @@ abstract class Generator
 
     public static function generatePluralModelNameFromTableName(string $table_name): string
     {
-        return str(Pluralizer::plural($table_name))->camel()->ucfirst();
+        return str(Pluralizer::plural($table_name))->camel();
     }
 
     public static function generateActionsForResourceController(?string $model_name): string
@@ -97,27 +103,27 @@ abstract class Generator
 
         // store
         $result .= "\t/**\n\t* Store a newly created resource in storage.\n\t*/";
-        $result .= "\n\t" .'public function store(Request $request)';
+        $result .= "\n\t" . 'public function store(Request $request)';
         $result .= "\n\t{\n\t\t//\n\t}\n\n";
 
         // show
         $result .= "\t/**\n\t* Display the specified resource.\n\t*/";
-        $result .= "\n\t" .'public function show('. $model_name.' $model)';
+        $result .= "\n\t" . 'public function show(' . $model_name . ' $model)';
         $result .= "\n\t{\n\t\t//\n\t}\n\n";
 
         // edit
         $result .= "\t/**\n\t* Show the form for editing the specified resource.\n\t*/";
-        $result .= "\n\t" .'public function edit(Request $request, '. $model_name.' $model)';
+        $result .= "\n\t" . 'public function edit(Request $request, ' . $model_name . ' $model)';
         $result .= "\n\t{\n\t\t//\n\t}\n\n";
 
         // update
         $result .= "\t/**\n\t* Update the specified resource in storage.\n\t*/";
-        $result .= "\n\t" .'public function update(Request $request, '. $model_name.' $model)';
+        $result .= "\n\t" . 'public function update(Request $request, ' . $model_name . ' $model)';
         $result .= "\n\t{\n\t\t//\n\t}\n\n";
 
         // destroy
         $result .= "\t/**\n\t* Remove the specified resource from storage.\n\t*/";
-        $result .= "\n\t" .'public function destroy(Request $request, '. $model_name.' $model)';
+        $result .= "\n\t" . 'public function destroy(Request $request, ' . $model_name . ' $model)';
         $result .= "\n\t{\n\t\t//\n\t}\n";
 
         return $result;

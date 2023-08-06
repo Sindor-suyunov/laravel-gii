@@ -8,44 +8,64 @@ abstract class Data
 {
     public static function getAllTableNames(): ?array
     {
-        $tables = DB::select("SHOW TABLES;");
+        $tables = DB::connection()->getDoctrineSchemaManager()->listTableNames();
         $tableNames = [];
-        if ($tables){
-            foreach ($tables as $item){
-                foreach ($item as $key => $value){
-                    $tableNames[] = $value;
-                }
+        if ($tables) {
+            foreach ($tables as $item) {
+                $tableNames[] = $item;
             }
             $tableNames = collect($tableNames)->sort()->toArray();
         }
         return $tableNames;
     }
 
-    public static function getHasManyTableNames(string $schema, string $table_name): ?array
+    public static function getHasManyTableNames(string $table_name): ?array
     {
-        return collect(DB::select("SELECT * FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = ? and REFERENCED_TABLE_NAME = ?",[$schema, $table_name]))->pluck('TABLE_NAME','COLUMN_NAME')->toArray();
+        $tables = DB::connection()->getDoctrineSchemaManager()->listTables();
+        if ($tables){
+            $result = [];
+            foreach ($tables as $table){
+                if ($foreignKeys = $table->getForeignKeys()){
+                    foreach ($foreignKeys as $foreignKey){
+                        if ($table_name == $foreignKey->getForeignTableName()){
+                            $result[$foreignKey->getLocalColumns()[0]] = $table->getName();
+                        }
+                    }
+                }
+            }
+            return $result;
+        }
+        return [];
     }
 
-    public static function getBelongsToTableNames(string $schema, string $table_name): ?array
+    public static function getBelongsToTableNames(string $table_name): ?array
     {
-        return collect(DB::select("SELECT * FROM information_schema.KEY_COLUMN_USAGE WHERE TABLE_SCHEMA = ? and REFERENCED_TABLE_NAME is not null and TABLE_NAME = ?",[$schema, $table_name]))->pluck('REFERENCED_TABLE_NAME','COLUMN_NAME')->toArray();
+        $columns = DB::connection()->getDoctrineSchemaManager()->listTableForeignKeys($table_name);
+        if ($columns){
+            $result = [];
+            foreach ($columns as $column){
+                $result[$column->getLocalColumns()[0]] = $column->getForeignTableName();
+            }
+            return $result;
+        }
+        return [];
     }
 
     public static function getColumnType(string $table_name, string $column): string
     {
-        return DB::getSchemaBuilder()->getColumnType($table_name, $column);
+        return DB::connection()->getSchemaBuilder()->getColumnType($table_name, $column);
     }
 
     public static function getLaravelPropertyTypeFromDB(string $table_name, string $column): string
     {
         $type = self::getColumnType($table_name, $column);
-        if (in_array($type,['bigint','smallint'])){
+        if (in_array($type, ['bigint', 'smallint'])) {
             return "integer";
-        }elseif (in_array($type,['json','jsonb'])){
+        } elseif (in_array($type, ['json', 'jsonb'])) {
             return "array";
-        }elseif (in_array($type,['date','datetime','timestamp'])){
+        } elseif (in_array($type, ['date', 'datetime', 'timestamp'])) {
             return "datetime";
-        }elseif (in_array($type,['text','string'])){
+        } elseif (in_array($type, ['text', 'string'])) {
             return "string";
         }
         return $type;
@@ -53,6 +73,6 @@ abstract class Data
 
     public static function getColumns(?string $table_name): array
     {
-        return collect(DB::select("describe $table_name"))->pluck('Field')->toArray();
+        return collect(DB::connection()->getDoctrineSchemaManager()->listTableColumns($table_name))->keys()->toArray();
     }
 }
