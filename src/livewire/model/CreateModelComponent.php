@@ -7,24 +7,37 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Foundation\Application as FoundApplication;
 use Livewire\Component;
+use Sindor\LaravelGii\DTOs\GenerateModelDTO;
 use Sindor\LaravelGii\helpers\Generator;
 
 class CreateModelComponent extends Component
 {
-    public string $model_namespace;
-    public string|null $table_name;
-    public string $model_name;
-    public string $model_path;
-    public bool $model_create_fillable;
-    public bool $model_create_casts;
-    public bool $model_create_relations;
-    public bool $add_resource_controller;
-    public string $controller_namespace;
-    public string $controller_name;
-    public string $controller_path;
+    public string|null $table_name = '';
+
+    public string $model_parent_class = '\Illuminate\Database\Eloquent\Model';
+    public string $model_namespace = 'App\Models';
+    public bool $model_overwrite = false;
+    public string $model_name = '';
+    public string $model_path = 'app\Models';
+
+    public bool $model_create_fillable = false;
+    public bool $model_create_casts = false;
+    public bool $model_create_relations = false;
+
+    public bool $add_resource_controller = false;
+    public bool $controller_overwrite = false;
+    public string $controller_namespace = 'App\Http\Controllers';
+    public string $controller_parent_class = '\App\Http\Controllers\Controller';
+    public string $controller_name = '';
+    public string $controller_path = 'app\Http\Controllers';
+
+    public bool $add_traits = false;
+    public array $traits = [];
+
     public bool $hasError = true;
 
     protected array $rules = [
+        'model_parent_class' => 'required',
         'model_namespace' => 'required',
         'table_name' => 'required',
         'model_name' => 'required',
@@ -32,22 +45,8 @@ class CreateModelComponent extends Component
         'controller_name' => "required_if:add_resource_controller,true",
         'controller_path' => "required_if:add_resource_controller,true",
         'controller_namespace' => "required_if:add_resource_controller,true",
+        'controller_parent_class' => "required_if:add_resource_controller,true",
     ];
-
-    public function mount(): void
-    {
-        $this->model_namespace = 'App\Models';
-        $this->model_path = 'app\Models';
-        $this->table_name = '';
-        $this->model_name = '';
-        $this->add_resource_controller = false;
-        $this->controller_namespace = 'App\Http\Controllers';
-        $this->controller_name = '';
-        $this->controller_path = 'app\Http\Controllers';
-        $this->model_create_relations = false;
-        $this->model_create_casts = false;
-        $this->model_create_fillable = false;
-    }
 
     public function generateModelName(): void
     {
@@ -66,7 +65,6 @@ class CreateModelComponent extends Component
         $this->validate();
         $this->hasError = false;
     }
-
 
     public function render(): View|FoundApplication|Factory|Application
     {

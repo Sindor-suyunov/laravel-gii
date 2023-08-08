@@ -5,67 +5,38 @@ namespace Sindor\LaravelGii\services\controller;
 use Illuminate\Support\Facades\File;
 use Sindor\LaravelGii\DTOs\GenerateControllerDTO;
 use Sindor\LaravelGii\helpers\Generator;
+use Sindor\LaravelGii\helpers\Universal;
 
 class GenerateResourceControllerService
 {
 
-    public function __construct(public GenerateControllerDTO $data
-    )
+    public function __construct(public GenerateControllerDTO $data)
     {
-    }
-
-    private function createDirectory(): string
-    {
-        $path = str(base_path($this->data->controller_path))->replace('\\', '/');
-        if (!File::isDirectory($path)) {
-            File::makeDirectory($path, 0777, true, true);
-        }
-        return $path;
-    }
-
-    private function getStubPath(): string
-    {
-        return __DIR__ . "/../../stubs/controller/resource-controller.stub";
     }
 
     private function getStubVariables(): array
     {
         return [
-            'NAMESPACE' => str($this->data->controller_namespace)->replace('/', '\\'),
+            'NAMESPACE' => $this->data->controller_namespace,
             'CLASS_NAME' => $this->data->controller_name,
-            'ACTIONS' => $this->getActions(),
+            'PARENT_CLASS' => $this->data->controller_parent_class,
+            'ACTIONS' => Generator::generateActionsForResourceController($this->data->model_name),
             'USE' => $this->getUses(),
         ];
     }
 
     private function getContents(): array|bool|string
     {
-        return $this->getStubContents($this->getStubPath(), $this->getStubVariables());
-    }
-
-    private function getStubContents($stub, $stubVariables = []): array|bool|string
-    {
-        $contents = file_get_contents($stub);
-        foreach ($stubVariables as $search => $replace) {
-            $contents = str_replace('$' . $search . '$', $replace, $contents);
-        }
-        return $contents;
+        return Universal::getReadyContent(
+            Universal::getStubPath('controller','resource-controller'),
+            $this->getStubVariables()
+        );
     }
 
     public function generateResourceController(): void
     {
-//        dd($this->data);
-        $path = $this->createDirectory() . "/" . $this->data->controller_name . '.php';
-        $contents = $this->getContents();
-
-        if (!File::exists($path)) {
-            File::put($path, $contents);
-        }
-    }
-
-    private function getActions(): string
-    {
-        return Generator::generateActionsForResourceController($this->data->model_name);
+        $path = Universal::makeFileWithDirectory($this->data->controller_path, $this->data->controller_name);
+        Universal::putContent($path, $this->getContents(), $this->data->controller_overwrite);
     }
 
     private function getUses(): string

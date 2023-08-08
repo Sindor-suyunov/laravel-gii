@@ -17,11 +17,6 @@
                             Generate model
                         </a>
                     </li>
-                    <li class="list-group-item bg-dark">
-                        <a href="{{ route('create-models-same-namespace') }}" class="text-white text-decoration-none">
-                            Generate many models (same namespace)
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>

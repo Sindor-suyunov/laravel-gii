@@ -2,7 +2,7 @@
 
 namespace $NAMESPACE$;
 
-class $CLASS_NAME$ extends \Illuminate\Database\Eloquent\Model
+class $CLASS_NAME$ extends $PARENT_CLASS$
 {$FILLABLE$ $CASTS$
 $RELATIONS$
 }

@@ -7,6 +7,7 @@ use Sindor\LaravelGii\DTOs\GenerateControllerDTO;
 use Sindor\LaravelGii\DTOs\GenerateSameModelsDTO;
 use Sindor\LaravelGii\helpers\Data;
 use Sindor\LaravelGii\helpers\Generator;
+use Sindor\LaravelGii\helpers\Universal;
 use Sindor\LaravelGii\services\controller\GenerateResourceControllerService;
 
 class GenerateSameModelsService
@@ -37,24 +38,10 @@ class GenerateSameModelsService
         $this->columns = Data::getColumns($table_name);
     }
 
-    private function createDirectory(): string
-    {
-        $path = str(base_path($this->data->model_path))->replace('\\', '/');
-        if (!File::isDirectory($path)) {
-            File::makeDirectory($path, 0777, true, true);
-        }
-        return $path;
-    }
-
-    private function getStubPath(): string
-    {
-        return __DIR__ . "/../../stubs/model/model.stub";
-    }
-
     private function getStubVariables(): array
     {
         return [
-            'NAMESPACE' => str($this->data->model_namespace)->replace('/', '\\'),
+            'NAMESPACE' => $this->data->model_namespace,
             'CLASS_NAME' => $this->model_name,
             'FILLABLE' => $this->getFillable(),
             'CASTS' => $this->getCasts(),
@@ -64,26 +51,17 @@ class GenerateSameModelsService
 
     private function getContents(): array|bool|string
     {
-        return $this->getStubContents($this->getStubPath(), $this->getStubVariables());
-    }
-
-    private function getStubContents($stub, $stubVariables = []): array|bool|string
-    {
-        $contents = file_get_contents($stub);
-        foreach ($stubVariables as $search => $replace) {
-            $contents = str_replace('$' . $search . '$', $replace, $contents);
-        }
-        return $contents;
+        return Universal::getReadyContent(
+            Universal::getStubPath('model','model'),
+            $this->getStubVariables()
+        );
     }
 
     public function generateModel(): void
     {
-        $path = $this->createDirectory() . "/" . $this->model_name . '.php';
-        $contents = $this->getContents();
+        $path = Universal::makeFileWithDirectory($this->data->model_path, $this->model_name);
 
-        if (!File::exists($path)) {
-            File::put($path, $contents);
-        }
+        Universal::putContent($path, $this->getContents());
 
         if ($this->data->add_resource_controller) {
             $this->generateResourceController();

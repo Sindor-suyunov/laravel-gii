@@ -3,7 +3,7 @@
 namespace $NAMESPACE$;
 $USE$
 
-class $CLASS_NAME$ extends \App\Http\Controllers\Controller
+class $CLASS_NAME$ extends $PARENT_CLASS$
 {
     $ACTIONS$
 }

@@ -10,6 +10,8 @@ class GenerateControllerDTO
     public string|null $controller_namespace;
     public string|null $controller_name;
     public string|null $controller_path;
+    public bool|null $controller_overwrite;
+    public string|null $controller_parent_class;
     public string|null $model_name;
     public string|null $model_namespace;
 
@@ -20,6 +22,8 @@ class GenerateControllerDTO
         $self->controller_namespace = $request->input('controller_namespace');
         $self->controller_name = $request->input('controller_name');
         $self->controller_path = $request->input('controller_path');
+        $self->controller_overwrite = $request->input('controller_overwrite');
+        $self->controller_parent_class = $request->input('controller_parent_class');
         return $self;
     }
 
@@ -31,6 +35,8 @@ class GenerateControllerDTO
         $self->controller_name = $dto->controller_name;
         $self->controller_namespace = $dto->controller_namespace;
         $self->controller_path = $dto->controller_path;
+        $self->controller_overwrite = $dto->controller_overwrite;
+        $self->controller_parent_class = $dto->controller_parent_class;
         return $self;
     }
 }
