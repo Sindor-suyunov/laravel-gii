@@ -12,7 +12,7 @@ use Sindor\LaravelGii\helpers\Generator;
 
 class CreateModelComponent extends Component
 {
-    public string|null $table_name = '';
+    public string|array $table_name = '';
 
     public string $model_parent_class = '\Illuminate\Database\Eloquent\Model';
     public string $model_namespace = 'App\Models';
@@ -24,17 +24,8 @@ class CreateModelComponent extends Component
     public bool $model_create_casts = false;
     public bool $model_create_relations = false;
 
-    public bool $add_resource_controller = false;
-    public bool $controller_overwrite = false;
-    public string $controller_namespace = 'App\Http\Controllers';
-    public string $controller_parent_class = '\App\Http\Controllers\Controller';
-    public string $controller_name = '';
-    public string $controller_path = 'app\Http\Controllers';
-
     public bool $add_traits = false;
     public array $traits = [];
-
-    public bool $hasError = true;
 
     protected array $rules = [
         'model_parent_class' => 'required',
@@ -42,28 +33,20 @@ class CreateModelComponent extends Component
         'table_name' => 'required',
         'model_name' => 'required',
         'model_path' => 'required',
-        'controller_name' => "required_if:add_resource_controller,true",
-        'controller_path' => "required_if:add_resource_controller,true",
-        'controller_namespace' => "required_if:add_resource_controller,true",
-        'controller_parent_class' => "required_if:add_resource_controller,true",
     ];
+
+    public $listeners = ['validation' => 'check'];
+
+    public function check(): void
+    {
+        $this->validate();
+        $this->emit('validated','model');
+    }
 
     public function generateModelName(): void
     {
         $this->model_name = Generator::generateSingularModelNameFromTableName($this->table_name);
-        $this->generateControllerName();
-    }
-
-    public function generateControllerName(): void
-    {
-        if ($this->add_resource_controller) $this->controller_name = Generator::generateSingularModelNameFromTableName($this->table_name) . 'Controller';
-    }
-
-    public function check()
-    {
-        $this->hasError = true;
-        $this->validate();
-        $this->hasError = false;
+        $this->emit('modelName', $this->model_name);
     }
 
     public function render(): View|FoundApplication|Factory|Application

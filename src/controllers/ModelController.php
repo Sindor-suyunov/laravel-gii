@@ -8,15 +8,18 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Sindor\LaravelGii\DTOs\GenerateControllerDTO;
 use Sindor\LaravelGii\DTOs\GenerateModelDTO;
 use Sindor\LaravelGii\DTOs\GenerateSameModelsDTO;
+use Sindor\LaravelGii\services\controller\GenerateControllerService;
 use Sindor\LaravelGii\services\model\GenerateModelService;
 use Sindor\LaravelGii\services\model\GenerateSameModelsService;
 
 class ModelController extends Controller
 {
     public function __construct(
-        public GenerateModelService $service,
+        public GenerateModelService $modelService,
+        public GenerateControllerService $controllerService,
     )
     {
     }
@@ -28,8 +31,13 @@ class ModelController extends Controller
 
     public function generateModel(Request $request): RedirectResponse
     {
-        $this->service->data = GenerateModelDTO::fromRequest($request);
-        $this->service->generateModel();
+        $this->modelService->data = GenerateModelDTO::fromRequest($request);
+        $this->modelService->generateModel();
+        if ($request->input('addResourceController')){
+            $this->controllerService->data = GenerateControllerDTO::fromRequest($request);
+            $this->controllerService->data->setAsResourceController($this->modelService->data);
+            $this->controllerService->generateController();
+        }
         return redirect()->route('create-model');
     }
 

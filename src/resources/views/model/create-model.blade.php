@@ -5,6 +5,6 @@
 @endsection
 @section('content')
     <div class="container">
-        @livewire('create-model')
+        @livewire('generate-model-page')
     </div>
 @endsection

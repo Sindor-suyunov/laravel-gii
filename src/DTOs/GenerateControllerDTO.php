@@ -6,37 +6,30 @@ use Illuminate\Http\Request;
 
 class GenerateControllerDTO
 {
-    public bool|null $add_resource_controller;
-    public string|null $controller_namespace;
-    public string|null $controller_name;
-    public string|null $controller_path;
-    public bool|null $controller_overwrite;
-    public string|null $controller_parent_class;
-    public string|null $model_name;
-    public string|null $model_namespace;
+    public bool $is_resource_controller = false;
+    public string $namespace;
+    public string $name;
+    public string $path;
+    public bool $overwrite;
+    public string $parent_class;
+
+    public string $model_name = '';
+    public string $model_namespace = '';
 
     public static function fromRequest(Request $request): GenerateControllerDTO
     {
         $self = new self();
-        $self->add_resource_controller = $request->input('add_resource_controller');
-        $self->controller_namespace = $request->input('controller_namespace');
-        $self->controller_name = $request->input('controller_name');
-        $self->controller_path = $request->input('controller_path');
-        $self->controller_overwrite = $request->input('controller_overwrite');
-        $self->controller_parent_class = $request->input('controller_parent_class');
+        foreach ($request->get('controller') as $key => $value) {
+            $self->$key = $value ?: "";
+        }
         return $self;
     }
 
-    public static function fromModelDTO(GenerateModelDTO $dto): GenerateControllerDTO
+    public function setAsResourceController(GenerateModelDTO $model): GenerateControllerDTO
     {
-        $self = new self();
-        $self->model_name = $dto->model_name;
-        $self->model_namespace = $dto->model_namespace;
-        $self->controller_name = $dto->controller_name;
-        $self->controller_namespace = $dto->controller_namespace;
-        $self->controller_path = $dto->controller_path;
-        $self->controller_overwrite = $dto->controller_overwrite;
-        $self->controller_parent_class = $dto->controller_parent_class;
-        return $self;
+        $this->is_resource_controller = true;
+        $this->model_name = $model->name;
+        $this->model_namespace = $model->namespace;
+        return $this;
     }
 }

@@ -19,9 +19,9 @@ class GenerateModelService
     private function getStubVariables(): array
     {
         return [
-            'NAMESPACE' => $this->data->model_namespace,
-            'CLASS_NAME' => $this->data->model_name,
-            'PARENT_CLASS' => $this->data->model_parent_class,
+            'NAMESPACE' => $this->data->namespace,
+            'CLASS_NAME' => $this->data->name,
+            'PARENT_CLASS' => $this->data->parent_class,
             'FILLABLE' => $this->getFillable(),
             'CASTS' => $this->getCasts(),
             'RELATIONS' => $this->getRelations(),
@@ -38,19 +38,19 @@ class GenerateModelService
 
     public function generateModel(): void
     {
-        $path = Universal::makeFileWithDirectory($this->data->model_path, $this->data->model_name);
+        $path = Universal::makeFileWithDirectory($this->data->path, $this->data->name);
 
-        Universal::putContent($path, $this->getContents(), $this->data->model_overwrite);
+        Universal::putContent($path, $this->getContents(), $this->data->overwrite);
 
-        if ($this->data->add_resource_controller) {
-            $service = new GenerateResourceControllerService(GenerateControllerDTO::fromModelDTO($this->data));
-            $service->generateResourceController();
-        }
+//        if ($this->data->add_xresource_controller) {
+//            $service = new GenerateResourceControllerService(GenerateControllerDTO::fromModelDTO($this->data));
+//            $service->generateResourceController();
+//        }
     }
 
     private function getFillable(): string
     {
-        if ($this->data->model_is_fillable) {
+        if ($this->data->has_fillable) {
             return Generator::generateFillableProperty($this->data->columns);
         }
         return "";
@@ -58,7 +58,7 @@ class GenerateModelService
 
     private function getCasts(): string
     {
-        if ($this->data->model_has_casts) {
+        if ($this->data->has_casts) {
             return Generator::generateCastsProperty($this->data->columns, $this->data->table_name);
         }
         return "";
@@ -66,7 +66,7 @@ class GenerateModelService
 
     private function getRelations(): string
     {
-        if ($this->data->model_has_relations) {
+        if ($this->data->has_relations) {
             return Generator::generateModelRelations($this->data->table_name);
         }
         return "";
