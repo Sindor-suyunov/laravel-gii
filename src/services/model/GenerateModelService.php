@@ -2,12 +2,9 @@
 
 namespace Sindor\LaravelGii\services\model;
 
-use Illuminate\Support\Facades\File;
-use Sindor\LaravelGii\DTOs\GenerateControllerDTO;
 use Sindor\LaravelGii\DTOs\GenerateModelDTO;
 use Sindor\LaravelGii\helpers\Generator;
 use Sindor\LaravelGii\helpers\Universal;
-use Sindor\LaravelGii\services\controller\GenerateResourceControllerService;
 
 class GenerateModelService
 {
@@ -25,6 +22,8 @@ class GenerateModelService
             'FILLABLE' => $this->getFillable(),
             'CASTS' => $this->getCasts(),
             'RELATIONS' => $this->getRelations(),
+            'TRAITS' => $this->getTraits(),
+            'INTERFACES' => $this->getInterfaces(),
         ];
     }
 
@@ -39,13 +38,7 @@ class GenerateModelService
     public function generateModel(): void
     {
         $path = Universal::makeFileWithDirectory($this->data->path, $this->data->name);
-
         Universal::putContent($path, $this->getContents(), $this->data->overwrite);
-
-//        if ($this->data->add_xresource_controller) {
-//            $service = new GenerateResourceControllerService(GenerateControllerDTO::fromModelDTO($this->data));
-//            $service->generateResourceController();
-//        }
     }
 
     private function getFillable(): string
@@ -68,6 +61,22 @@ class GenerateModelService
     {
         if ($this->data->has_relations) {
             return Generator::generateModelRelations($this->data->table_name);
+        }
+        return "";
+    }
+
+    private function getTraits(): string
+    {
+        if ($this->data->has_traits and $this->data->traits){
+            return "\n\tuse " . $this->data->traits . ";\n";
+        }
+        return "";
+    }
+
+    private function getInterfaces(): string
+    {
+        if ($this->data->has_interfaces and $this->data->interfaces){
+            return "implements " . $this->data->interfaces;
         }
         return "";
     }

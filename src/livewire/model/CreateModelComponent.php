@@ -24,8 +24,11 @@ class CreateModelComponent extends Component
     public bool $model_create_casts = false;
     public bool $model_create_relations = false;
 
-    public bool $add_traits = false;
-    public array $traits = [];
+    public bool $has_traits = false;
+    public string $traits = '';
+
+    public bool $has_interfaces = false;
+    public string $interfaces = '';
 
     protected array $rules = [
         'model_parent_class' => 'required',
@@ -33,6 +36,8 @@ class CreateModelComponent extends Component
         'table_name' => 'required',
         'model_name' => 'required',
         'model_path' => 'required',
+        'traits' => 'required_if:has_traits,true',
+        'interfaces' => 'required_if:has_interfaces,true',
     ];
 
     public $listeners = ['validation' => 'check'];

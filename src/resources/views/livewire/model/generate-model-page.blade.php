@@ -29,7 +29,7 @@
         @endif
     </div>
 
-    <div class="row">
+    <div class="row mt-5">
         <div class="offset-sm-8 col-sm-4">
             <button type="button" wire:click="check" class="btn btn-info">Check form</button>
             @if($hasError)

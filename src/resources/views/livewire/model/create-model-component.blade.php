@@ -73,6 +73,38 @@
                     @error('model_parent_class')<span class="error text-danger">{{ $message }}</span> @enderror
                 </div>
             </div>
+            @if($has_traits)
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label for="traits" class="form-label text-white">Model traits (write with commas)</label>
+                        <input type="text"
+                               name="model[traits]"
+                               class="form-control form-control-lg"
+                               id="traits"
+                               wire:model="traits"
+                               placeholder="\App\Traits\Trait1, ...">
+                        @error('traits')<span class="error text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+            @else
+                <input type="hidden" name="model[traits]" value="">
+            @endif
+            @if($has_interfaces)
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label for="interfaces" class="form-label text-white">Model interfaces (write with commas)</label>
+                        <input type="text"
+                               name="model[interfaces]"
+                               class="form-control form-control-lg"
+                               id="interfaces"
+                               wire:model="interfaces"
+                               placeholder="\App\Interfaces\Interface1, ...">
+                        @error('interfaces')<span class="error text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+            @else
+                <input type="hidden" name="model[interfaces]" value="">
+            @endif
         </div>
     </div>
     <div class="col-sm-4 d-flex justify-content-around flex-column">
@@ -128,6 +160,32 @@
                 Add relational methods if has
             </label>
             <input type="hidden" name="model[has_relations]" value="{{ $model_create_relations }}">
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input"
+                   name="model_has_traits"
+                   type="checkbox"
+                   role="switch"
+                   wire:model="has_traits"
+                   @checked($has_traits)
+                   id="has_traits">
+            <label class="form-check-label text-white" for="has_traits">
+                Add traits
+            </label>
+            <input type="hidden" name="model[has_traits]" value="{{ $has_traits }}">
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input"
+                   name="has_interfaces"
+                   type="checkbox"
+                   role="switch"
+                   wire:model="has_interfaces"
+                   @checked($has_interfaces)
+                   id="has_interfaces">
+            <label class="form-check-label text-white" for="has_interfaces">
+                Add interfaces
+            </label>
+            <input type="hidden" name="model[has_interfaces]" value="{{ $has_interfaces }}">
         </div>
     </div>
 </div>

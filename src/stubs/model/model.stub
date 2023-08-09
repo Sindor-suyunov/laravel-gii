@@ -2,7 +2,7 @@
 
 namespace $NAMESPACE$;
 
-class $CLASS_NAME$ extends $PARENT_CLASS$
-{$FILLABLE$ $CASTS$
+class $CLASS_NAME$ extends $PARENT_CLASS$ $INTERFACES$
+{ $TRAITS$ $FILLABLE$ $CASTS$
 $RELATIONS$
 }

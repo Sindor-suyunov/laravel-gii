@@ -16,11 +16,15 @@ class GenerateModelDTO
     public string $parent_class;
     public string $namespace;
     public string $path;
+    public string $traits;
+    public string $interfaces;
 
     public bool $overwrite;
     public bool $has_fillable;
     public bool $has_casts;
     public bool $has_relations;
+    public bool $has_traits;
+    public bool $has_interfaces;
 
     public static function fromRequest(Request $request): GenerateModelDTO
     {
