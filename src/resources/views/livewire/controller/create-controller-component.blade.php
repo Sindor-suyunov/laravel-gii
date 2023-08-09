@@ -60,6 +60,38 @@
                     @enderror
                 </div>
             </div>
+            @if($has_traits)
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label for="traits" class="form-label text-white">Controller traits (write with commas)</label>
+                        <input type="text"
+                               name="controller[traits]"
+                               class="form-control form-control-lg"
+                               id="traits"
+                               wire:model="traits"
+                               placeholder="\App\Traits\Trait1, ...">
+                        @error('traits')<span class="error text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+            @else
+                <input type="hidden" name="controller[traits]" value="">
+            @endif
+            @if($has_interfaces)
+                <div class="col-sm-12">
+                    <div class="mb-3">
+                        <label for="interfaces" class="form-label text-white">Controller interfaces (write with commas)</label>
+                        <input type="text"
+                               name="controller[interfaces]"
+                               class="form-control form-control-lg"
+                               id="interfaces"
+                               wire:model="interfaces"
+                               placeholder="\App\Interfaces\Interface1, ...">
+                        @error('interfaces')<span class="error text-danger">{{ $message }}</span> @enderror
+                    </div>
+                </div>
+            @else
+                <input type="hidden" name="controller[interfaces]" value="">
+            @endif
         </div>
     </div>
     <div class="col-sm-4 d-flex justify-content-between flex-column">
@@ -75,6 +107,46 @@
                 Overwrite resource controller if exists
             </label>
             <input type="hidden" name="controller[overwrite]" value="{{ $controller_overwrite }}">
+        </div>
+
+        <div class="form-check form-switch">
+            <input class="form-check-input"
+                   name="is_generation_actions"
+                   type="checkbox"
+                   role="switch"
+                   wire:model="is_generation_actions"
+                   @checked($is_generation_actions)
+                   id="is_generation_actions">
+            <label class="form-check-label text-white" for="is_generation_actions">
+                Generate actions
+            </label>
+            <input type="hidden" name="controller[is_generation_actions]" value="{{ $is_generation_actions }}">
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input"
+                   name="has_traits"
+                   type="checkbox"
+                   role="switch"
+                   wire:model="has_traits"
+                   @checked($has_traits)
+                   id="has_traits">
+            <label class="form-check-label text-white" for="has_traits">
+                Add traits
+            </label>
+            <input type="hidden" name="controller[has_traits]" value="{{ $has_traits }}">
+        </div>
+        <div class="form-check form-switch">
+            <input class="form-check-input"
+                   name="has_interfaces"
+                   type="checkbox"
+                   role="switch"
+                   wire:model="has_interfaces"
+                   @checked($has_interfaces)
+                   id="has_interfaces">
+            <label class="form-check-label text-white" for="has_interfaces">
+                Add interfaces
+            </label>
+            <input type="hidden" name="controller[has_interfaces]" value="{{ $has_interfaces }}">
         </div>
     </div>
 </div>

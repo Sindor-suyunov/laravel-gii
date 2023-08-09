@@ -22,6 +22,8 @@ class GenerateControllerService
             'PARENT_CLASS' => $this->data->parent_class,
             'ACTIONS' => $this->getActions(),
             'USE' => $this->getUses(),
+            'TRAITS' => $this->getTraits(),
+            'INTERFACES' => $this->getInterfaces(),
         ];
     }
 
@@ -47,7 +49,23 @@ class GenerateControllerService
 
     private function getActions(): string
     {
-        if ($this->data->is_resource_controller) return Generator::generateActionsForResourceController($this->data->model_name);
+        if ($this->data->is_resource_controller and $this->data->is_generation_actions) return Generator::generateActionsForResourceController($this->data->model_name);
         return "//";
+    }
+
+    private function getTraits(): string
+    {
+        if ($this->data->has_traits and $this->data->traits){
+            return "\n\tuse " . $this->data->traits . ";\n";
+        }
+        return "";
+    }
+
+    private function getInterfaces(): string
+    {
+        if ($this->data->has_interfaces and $this->data->interfaces){
+            return "implements " . $this->data->interfaces;
+        }
+        return "";
     }
 }

@@ -3,7 +3,7 @@
 namespace $NAMESPACE$;
 $USE$
 
-class $CLASS_NAME$ extends $PARENT_CLASS$
-{
+class $CLASS_NAME$ extends $PARENT_CLASS$ $INTERFACES$
+{   $TRAITS$
     $ACTIONS$
 }

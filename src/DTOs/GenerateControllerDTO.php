@@ -7,14 +7,19 @@ use Illuminate\Http\Request;
 class GenerateControllerDTO
 {
     public bool $is_resource_controller = false;
+    public bool $is_generation_actions = true;
+    public bool $overwrite;
+    public bool $has_traits;
+    public bool $has_interfaces;
+
     public string $namespace;
     public string $name;
     public string $path;
-    public bool $overwrite;
     public string $parent_class;
-
     public string $model_name = '';
     public string $model_namespace = '';
+    public string $traits;
+    public string $interfaces;
 
     public static function fromRequest(Request $request): GenerateControllerDTO
     {
