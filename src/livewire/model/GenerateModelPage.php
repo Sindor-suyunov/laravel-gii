@@ -10,10 +10,12 @@ use Livewire\Component;
 class GenerateModelPage extends Component
 {
     public bool $addResourceController = false;
+    public bool $addRequest = false;
     public bool $hasError = true;
     public array $has_errors = [
         'model' => true,
-        'controller' => false
+        'controller' => false,
+        'request' => false,
     ];
 
     public $listeners = ['validated' => 'validated'];
@@ -22,6 +24,8 @@ class GenerateModelPage extends Component
     {
         if ($this->addResourceController){
             $this->has_errors['controller'] = true;
+        }if ($this->addRequest){
+            $this->has_errors['request'] = true;
         }
         $this->emit('validation');
         $this->checkHasError();

@@ -94,7 +94,7 @@
             @endif
         </div>
     </div>
-    <div class="col-sm-4 d-flex justify-content-between flex-column">
+    <div class="col-sm-4 d-flex justify-content-around flex-column">
         <div class="form-check form-switch">
             <input class="form-check-input"
                    name="controller_overwrite_"
