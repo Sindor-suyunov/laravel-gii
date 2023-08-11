@@ -75,4 +75,9 @@ abstract class Data
     {
         return collect(DB::connection()->getDoctrineSchemaManager()->listTableColumns($table_name))->keys()->toArray();
     }
+
+    public static function getColumnsWithInfo(?string $table_name): array
+    {
+        return DB::connection()->getDoctrineSchemaManager()->listTableColumns($table_name);
+    }
 }
