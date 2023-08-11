@@ -2,9 +2,8 @@
 
 namespace Sindor\LaravelGii\services\controller;
 
-use Illuminate\Support\Facades\File;
 use Sindor\LaravelGii\DTOs\GenerateControllerDTO;
-use Sindor\LaravelGii\helpers\Generator;
+use Sindor\LaravelGii\helpers\Controller;
 use Sindor\LaravelGii\helpers\Universal;
 
 class GenerateControllerService
@@ -49,7 +48,7 @@ class GenerateControllerService
 
     private function getActions(): string
     {
-        if ($this->data->is_resource_controller and $this->data->is_generation_actions) return Generator::generateActionsForResourceController($this->data->model_name);
+        if ($this->data->is_resource_controller and $this->data->is_generation_actions) return Controller::generateActionsForResourceController($this->data->model_name);
         return "//";
     }
 

@@ -3,7 +3,7 @@
 namespace Sindor\LaravelGii\services\model;
 
 use Sindor\LaravelGii\DTOs\GenerateModelDTO;
-use Sindor\LaravelGii\helpers\Generator;
+use Sindor\LaravelGii\helpers\Model;
 use Sindor\LaravelGii\helpers\Universal;
 
 class GenerateModelService
@@ -44,7 +44,7 @@ class GenerateModelService
     private function getFillable(): string
     {
         if ($this->data->has_fillable) {
-            return Generator::generateFillableProperty($this->data->columns);
+            return Model::generateFillableProperty($this->data->columns);
         }
         return "";
     }
@@ -52,7 +52,7 @@ class GenerateModelService
     private function getCasts(): string
     {
         if ($this->data->has_casts) {
-            return Generator::generateCastsProperty($this->data->columns, $this->data->table_name);
+            return Model::generateCastsProperty($this->data->columns, $this->data->table_name);
         }
         return "";
     }
@@ -60,7 +60,7 @@ class GenerateModelService
     private function getRelations(): string
     {
         if ($this->data->has_relations) {
-            return Generator::generateModelRelations($this->data->table_name);
+            return Model::generateModelRelations($this->data->table_name);
         }
         return "";
     }
