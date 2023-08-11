@@ -29,6 +29,28 @@
         @endif
     </div>
 
+    <div class="controller mt-5">
+        <span class="h4 text-white bg-danger px-2 py-1 rounded">
+            Form Request for model
+        </span>
+        <span class="mt-2 form-check form-switch">
+            <input class="form-check-input"
+                   name="addRequest"
+                   type="checkbox"
+                   role="switch"
+                   wire:model="addRequest"
+                   wire:click="check"
+                   id="addRequest">
+                <label class="form-check-label text-white" for="addRequest">
+                    Add form request
+                </label>
+                <input type="hidden" name="addRequest" value="{{ $addRequest }}">
+        </span>
+        @if($addRequest)
+            @livewire('create-request')
+        @endif
+    </div>
+
     <div class="row mt-5">
         <div class="offset-sm-8 col-sm-4">
             <button type="button" wire:click="check" class="btn btn-info">Check form</button>
