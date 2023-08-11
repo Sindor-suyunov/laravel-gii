@@ -1,7 +1,7 @@
 {
     "name": "sindor/laravel-gii",
     "description": "Gii module for Laravel",
-    "keywords": ["laravel","laravel-gii","sindor-laravel","sindor-gii"],
+    "keywords": ["laravel","laravel-gii","sindor-laravel","sindor-gii","gii","code generator","generator","easy-code"],
     "minimum-stability": "dev",
     "license": "MIT",
     "authors": [
