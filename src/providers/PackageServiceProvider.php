@@ -4,7 +4,7 @@ namespace Sindor\LaravelGii\providers;
 
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
-use Sindor\LaravelGii\livewire\model\CreateControllerComponent;
+use Sindor\LaravelGii\livewire\controller\CreateControllerComponent;
 use Sindor\LaravelGii\livewire\model\CreateModelComponent;
 use Sindor\LaravelGii\livewire\model\CreateModelsSameNamespace;
 use Sindor\LaravelGii\livewire\model\GenerateModelPage;

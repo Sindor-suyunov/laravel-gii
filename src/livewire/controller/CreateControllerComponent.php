@@ -1,6 +1,6 @@
 <?php
 
-namespace Sindor\LaravelGii\livewire\model;
+namespace Sindor\LaravelGii\livewire\controller;
 
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
