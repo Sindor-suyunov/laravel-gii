@@ -10,6 +10,7 @@ abstract class Model
             $result = "\n\t/**\n\t* The attributes that are mass assignable.\n\t*\n\t* @var array\n\t*/\n\t";
             $result .= 'protected $fillable = [' . PHP_EOL;
             foreach ($columns as $column) {
+                if (in_array($column, Data::doNotTouchFields())) continue;
                 $result .= "\t\t" . "'$column',\n";
             }
             $result .= "\t];";
@@ -24,6 +25,7 @@ abstract class Model
             $result = "\n\t/**\n\t* The attributes that should be cast.\n\t*\n\t* @var array\n\t*/\n\t";
             $result .= 'protected $casts = [' . PHP_EOL;
             foreach ($columns as $column) {
+                if (in_array($column, Data::doNotTouchFields())) continue;
                 $result .= "\t\t" . "'$column' => " . "'" . Data::getLaravelPropertyTypeFromDB($table_name, $column) . "',\n";
             }
             $result .= "\t];";

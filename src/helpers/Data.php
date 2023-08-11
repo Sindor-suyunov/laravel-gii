@@ -80,4 +80,9 @@ abstract class Data
     {
         return DB::connection()->getDoctrineSchemaManager()->listTableColumns($table_name);
     }
+
+    public static function doNotTouchFields(): array
+    {
+        return ['id', 'created_at', 'updated_at', 'deleted_at'];
+    }
 }
