@@ -1,0 +1,8 @@
+<?php
+
+namespace $NAMESPACE$;
+
+class $CLASS_NAME$ extends $PARENT_CLASS$
+{
+    $AUTH$$VALIDATION$
+}

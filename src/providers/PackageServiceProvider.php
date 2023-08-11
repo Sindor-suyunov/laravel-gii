@@ -8,6 +8,7 @@ use Sindor\LaravelGii\livewire\controller\CreateControllerComponent;
 use Sindor\LaravelGii\livewire\model\CreateModelComponent;
 use Sindor\LaravelGii\livewire\model\CreateModelsSameNamespace;
 use Sindor\LaravelGii\livewire\model\GenerateModelPage;
+use Sindor\LaravelGii\livewire\request\CreateFormRequest;
 
 class PackageServiceProvider extends ServiceProvider
 {
@@ -18,6 +19,7 @@ class PackageServiceProvider extends ServiceProvider
         Livewire::component('generate-model-page',GenerateModelPage ::class);
         Livewire::component('create-model',CreateModelComponent::class);
         Livewire::component('create-controller',CreateControllerComponent::class);
+        Livewire::component('create-request',CreateFormRequest::class);
         Livewire::component('create-models-same-namespace',CreateModelsSameNamespace::class);
     }
 }
