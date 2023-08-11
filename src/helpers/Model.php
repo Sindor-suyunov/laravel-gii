@@ -7,7 +7,7 @@ abstract class Model
     public static function generateFillableProperty(?array $columns): string
     {
         if ($columns) {
-            $result = "\n\t/**\n\t* The attributes that are mass assignable.\n\t*\n\t* @var array\n\t*/\n\t";
+            $result = "\n\n\t";
             $result .= 'protected $fillable = [' . PHP_EOL;
             foreach ($columns as $column) {
                 if (in_array($column, Data::doNotTouchFields())) continue;
@@ -16,13 +16,13 @@ abstract class Model
             $result .= "\t];";
             return $result;
         }
-        return "\r";
+        return "";
     }
 
     public static function generateCastsProperty(?array $columns, string $table_name): string
     {
         if ($columns) {
-            $result = "\n\t/**\n\t* The attributes that should be cast.\n\t*\n\t* @var array\n\t*/\n\t";
+            $result = "\n\n\t";
             $result .= 'protected $casts = [' . PHP_EOL;
             foreach ($columns as $column) {
                 if (in_array($column, Data::doNotTouchFields())) continue;
@@ -31,7 +31,7 @@ abstract class Model
             $result .= "\t];";
             return $result;
         }
-        return "\r";
+        return "";
     }
 
     public static function generateModelRelations(string $table_name): string
