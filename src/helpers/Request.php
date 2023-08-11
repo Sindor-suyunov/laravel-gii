@@ -19,7 +19,7 @@ abstract class Request
         if ($columns = Data::getColumnsWithInfo($table_name)) {
             $result .= "\n\n\tpublic function validation(): array\n\t{\n\t\treturn [";
             foreach ($columns as $column) {
-                if (in_array($column->getName(), ['id', 'created_at', 'updated_at', 'deleted_at'])) continue;
+                if (in_array($column->getName(), Data::doNotTouchFields())) continue;
                 $result .= self::validationForColumn($column, $table_name);
             }
             $result .= "\n\t\t];\n\t}";

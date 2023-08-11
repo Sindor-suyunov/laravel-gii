@@ -5,6 +5,7 @@ namespace Sindor\LaravelGii\providers;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use Sindor\LaravelGii\livewire\controller\CreateControllerComponent;
+use Sindor\LaravelGii\livewire\dto\CreateDTOComponent;
 use Sindor\LaravelGii\livewire\model\CreateModelComponent;
 use Sindor\LaravelGii\livewire\model\CreateModelsSameNamespace;
 use Sindor\LaravelGii\livewire\model\GenerateModelPage;
@@ -20,6 +21,7 @@ class PackageServiceProvider extends ServiceProvider
         Livewire::component('create-model',CreateModelComponent::class);
         Livewire::component('create-controller',CreateControllerComponent::class);
         Livewire::component('create-request',CreateFormRequest::class);
+        Livewire::component('create-dto',CreateDTOComponent::class);
         Livewire::component('create-models-same-namespace',CreateModelsSameNamespace::class);
     }
 }

@@ -10,10 +10,13 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Sindor\LaravelGii\DTOs\GenerateControllerDTO;
+use Sindor\LaravelGii\DTOs\GenerateDTO;
 use Sindor\LaravelGii\DTOs\GenerateFormRequestDTO;
 use Sindor\LaravelGii\DTOs\GenerateModelDTO;
 use Sindor\LaravelGii\DTOs\GenerateSameModelsDTO;
+use Sindor\LaravelGii\helpers\Data;
 use Sindor\LaravelGii\services\controller\GenerateControllerService;
+use Sindor\LaravelGii\services\dto\GenerateDTOService;
 use Sindor\LaravelGii\services\model\GenerateModelService;
 use Sindor\LaravelGii\services\model\GenerateSameModelsService;
 use Sindor\LaravelGii\services\request\GenerateFormRequestService;
@@ -24,6 +27,7 @@ class ModelController extends Controller
         public GenerateModelService       $modelService,
         public GenerateControllerService  $controllerService,
         public GenerateFormRequestService $formRequestService,
+        public GenerateDTOService         $dtoService,
     )
     {
     }
@@ -46,6 +50,13 @@ class ModelController extends Controller
             $this->formRequestService->data = GenerateFormRequestDTO::fromRequest($request);
             $this->formRequestService->data->table_name = $this->modelService->data->table_name;
             $this->formRequestService->generateFormRequest();
+        }
+        if ($request->input('addDTO')) {
+            $this->dtoService->data = GenerateDTO::fromRequest($request);
+            $this->dtoService->data->table_name = $this->modelService->data->table_name;
+            $this->dtoService->data->model_namespace = $this->modelService->data->namespace;
+            $this->dtoService->data->model_name = $this->modelService->data->name;
+            $this->dtoService->generateDTO();
         }
         return redirect()->route('create-model');
     }

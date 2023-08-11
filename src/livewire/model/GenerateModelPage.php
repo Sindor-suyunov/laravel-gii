@@ -11,11 +11,14 @@ class GenerateModelPage extends Component
 {
     public bool $addResourceController = false;
     public bool $addRequest = false;
+    public bool $addDTO = false;
+
     public bool $hasError = true;
     public array $has_errors = [
         'model' => true,
         'controller' => false,
         'request' => false,
+        'dto' => false,
     ];
 
     public $listeners = ['validated' => 'validated'];
@@ -26,6 +29,8 @@ class GenerateModelPage extends Component
             $this->has_errors['controller'] = true;
         }if ($this->addRequest){
             $this->has_errors['request'] = true;
+        }if ($this->addDTO){
+            $this->has_errors['dto'] = true;
         }
         $this->emit('validation');
         $this->checkHasError();

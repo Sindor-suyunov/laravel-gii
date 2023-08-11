@@ -2,6 +2,7 @@
 
 namespace Sindor\LaravelGii\helpers;
 
+use Doctrine\DBAL\Schema\Column;
 use Illuminate\Support\Facades\DB;
 
 abstract class Data
@@ -22,12 +23,12 @@ abstract class Data
     public static function getHasManyTableNames(string $table_name): ?array
     {
         $tables = DB::connection()->getDoctrineSchemaManager()->listTables();
-        if ($tables){
+        if ($tables) {
             $result = [];
-            foreach ($tables as $table){
-                if ($foreignKeys = $table->getForeignKeys()){
-                    foreach ($foreignKeys as $foreignKey){
-                        if ($table_name == $foreignKey->getForeignTableName()){
+            foreach ($tables as $table) {
+                if ($foreignKeys = $table->getForeignKeys()) {
+                    foreach ($foreignKeys as $foreignKey) {
+                        if ($table_name == $foreignKey->getForeignTableName()) {
                             $result[$foreignKey->getLocalColumns()[0]] = $table->getName();
                         }
                     }
@@ -41,9 +42,9 @@ abstract class Data
     public static function getBelongsToTableNames(string $table_name): ?array
     {
         $columns = DB::connection()->getDoctrineSchemaManager()->listTableForeignKeys($table_name);
-        if ($columns){
+        if ($columns) {
             $result = [];
-            foreach ($columns as $column){
+            foreach ($columns as $column) {
                 $result[$column->getLocalColumns()[0]] = $column->getForeignTableName();
             }
             return $result;
@@ -73,7 +74,7 @@ abstract class Data
 
     public static function getColumns(?string $table_name): array
     {
-        return collect(DB::connection()->getDoctrineSchemaManager()->listTableColumns($table_name))->keys()->toArray();
+        return collect(self::getColumnsWithInfo($table_name))->keys()->toArray();
     }
 
     public static function getColumnsWithInfo(?string $table_name): array
@@ -84,5 +85,34 @@ abstract class Data
     public static function doNotTouchFields(): array
     {
         return ['id', 'created_at', 'updated_at', 'deleted_at'];
+    }
+
+    public static function getProperTypeForClass(string $type): string
+    {
+        return match ($type) {
+            "integer" => "int",
+            "array" => "array",
+            default => "string",
+        };
+    }
+
+    public static function getColumnTypeInLaravel(Column $column): string
+    {
+        $type = $column->getType()->getName();
+        if (in_array($type, ['bigint', 'smallint'])) {
+            return "integer";
+        } elseif (in_array($type, ['json', 'jsonb'])) {
+            return "array";
+        } elseif (in_array($type, ['date', 'datetime', 'timestamp'])) {
+            return "datetime";
+        } elseif (in_array($type, ['text', 'string'])) {
+            return "string";
+        }
+        return $type;
+    }
+
+    public static function getTrueColumns(string $table_name): array
+    {
+        return collect(self::getColumns($table_name))->diff(self::doNotTouchFields())->toArray();
     }
 }
